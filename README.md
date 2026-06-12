@@ -1,10 +1,11 @@
-# Transformer-Based Multi-Panel CPET Classification for Pulmonary Hypertension Detection
+# Deep Learning on Wassermann Plots for Pulmonary Hypertension Detection and Subtype Discrimination
 
 Code for the paper:  
-**"[Paper Title]"**  
+**"Deep Learning on Wassermann Plots for Pulmonary Hypertension Detection and Subtype Discrimination"**  
+Tri-Thien Nguyen, Andreas Maier, Michael Uder, Sebastian Bickelhaupt, Julian Mueller, Simon R. Schneider, Michael Furian, Helga Preiss, Carmen Wick, Silvia Ulrich, Mona Lichtblau  
 *[Journal Name], [Year]*
 
-Trained model weights: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+Trained model weights: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20667420.svg)](https://doi.org/10.5281/zenodo.20667420)
 
 ---
 
@@ -195,7 +196,7 @@ The panel-shuffling ablation shows no significant performance drop, indicating t
 
 Trained model weights (5-fold checkpoints for ConvNeXt-Baseline and ConvNeXt-ShuffledPanels) are available on Zenodo:
 
-**DOI: [https://doi.org/10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)**
+**DOI: [https://doi.org/10.5281/zenodo.20667420](https://doi.org/10.5281/zenodo.20667420)**
 
 Expected structure after download:
 
@@ -242,10 +243,10 @@ See `requirements.txt` for the full list.
 If you use this code, please cite:
 
 ```bibtex
-@article{[key],
-  title   = {[Paper Title]},
-  author  = {[Authors]},
-  journal = {[Journal]},
+@article{nguyen2025spiroergo,
+  title   = {Deep Learning on Wassermann Plots for Pulmonary Hypertension Detection and Subtype Discrimination},
+  author  = {Nguyen, Tri-Thien and Maier, Andreas and Uder, Michael and Bickelhaupt, Sebastian and Mueller, Julian and Schneider, Simon R. and Furian, Michael and Preiss, Helga and Wick, Carmen and Ulrich, Silvia and Lichtblau, Mona},
+  journal = {[Journal Name]},
   year    = {[Year]},
   doi     = {[DOI]}
 }
