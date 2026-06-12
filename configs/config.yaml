@@ -1,0 +1,31 @@
+# Main configuration file
+defaults:
+  - model: cnn_vit_hybrid
+  - data: cpet_data
+  - training: default
+  - augmentation: clinical_aware
+  - _self_
+
+# Global settings
+project_name: "SpiroErgoPHFinal"
+experiment_name: "CNN-ViT-Hybrid"
+seed: 42
+
+# Weights & Biases settings
+wandb:
+  project: ${project_name}
+  entity: null  # Set your wandb entity here
+  name: ${experiment_name}
+  tags: ["cpet", "pulmonary-hypertension", "cnn-vit", "medical-imaging"]
+  notes: "End-to-end CPET plot classification for PH detection using CNN-ViT hybrid architecture"
+  mode: "online"  # online, offline, or disabled
+  
+# Output directories
+output_dir: "outputs"
+checkpoint_dir: "checkpoints"
+log_dir: "logs"
+results_dir: "results"
+
+# Device settings
+device: "auto"  # auto, cuda, cpu
+mixed_precision: true

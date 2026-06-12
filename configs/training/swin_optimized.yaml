@@ -1,0 +1,66 @@
+# Optimized Training Configuration for Swin Transformer
+# Same strategy as ConvNeXt - designed to avoid local optima
+
+epochs: 150  # Increased - allow more time to escape local optima
+
+# LOWER learning rate for stability
+learning_rate: 5e-5  # Reduced from 3e-4 - more careful optimization
+
+weight_decay: 1e-4
+
+# Optimizer settings
+optimizer:
+  name: "adamw"
+  betas: [0.9, 0.999]
+  eps: 1e-8
+  
+# Learning rate scheduling - Use Cosine with Warmup
+scheduler:
+  name: "cosine_annealing"  # Smoother than reduce_on_plateau
+  T_max: 150  # Match epochs
+  eta_min: 1e-7  # Minimum LR
+  warmup_epochs: 10  # Gentle warmup to avoid early instability
+  
+# Differential learning rates for different model components
+learning_rates:
+  cnn_backbone: 0.5  # Lower multiplier for encoder - gentle fine-tuning
+  vit_components: 1.0  # Standard for aggregator
+  classifier: 1.5     # Slightly higher for classifier
+
+# Early stopping - MORE PATIENCE
+early_stopping:
+  patience: 25  # Increased from 15 - give more time to escape local optima
+  min_delta: 0.0005  # Smaller delta - more sensitive to small improvements
+  monitor: "val_auc"
+  mode: "max"
+  restore_best_weights: true
+
+# Model checkpointing
+checkpoint:
+  monitor: "val_auc"
+  mode: "max"
+  save_best_only: true
+  save_last: true
+  
+# Loss function
+loss:
+  name: "cross_entropy"
+  label_smoothing: 0.1
+  use_class_weights: true
+
+# Regularization
+regularization:
+  gradient_clipping: 1.0  # Prevent gradient explosion
+  dropout_rate: 0.15  # Match model config
+
+# Mixed precision training
+mixed_precision: true
+
+# Validation frequency
+val_check_interval: 1  # Validate every epoch
+
+# Learning rate warmup (if scheduler supports it)
+warmup:
+  enabled: true
+  warmup_epochs: 10
+  warmup_start_lr: 1e-7

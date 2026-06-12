@@ -1,0 +1,7 @@
+id;filename;binary_class;split;fold_test;fold_val
+1;case_000001;0;train;2;1
+2;case_000002;1;train;0;4
+3;case_000003;0;train;4;3
+4;case_000004;1;train;1;0
+5;case_000005;0;val;2;1
+6;case_000006;1;test;0;4

@@ -1,0 +1,40 @@
+# Swin Transformer Multi-Plot Configuration
+name: "swin_multiplot"
+
+# Swin encoder settings - UNFROZEN FOR FINE-TUNING
+swin_model: "microsoft/swin-tiny-patch4-window7-224"  # Use Tiny (28M) to reduce overfitting
+pretrained: true  # Use pretrained weights
+freeze_encoder: false  # UNFREEZE - allow fine-tuning to medical plots
+feature_dim: 768  # Swin-Tiny output dimension
+projection_dim: null  # null to use Swin feature dim
+
+# Multi-plot architecture
+num_panels: 9  # 3x3 grid of plots
+
+# Transformer aggregator settings - BALANCED REGULARIZATION
+num_heads: 8
+num_transformer_layers: 3
+dropout: 0.15  # Balanced dropout (not too high)
+mlp_ratio: 4.0  # FFN expansion ratio in transformer
+
+# Classification head
+mlp_hidden_dim: 256
+
+# Model variants
+variants:
+  small:
+    swin_model: "microsoft/swin-small-patch4-window7-224"  # Swin-Small (49M params)
+    feature_dim: 768
+    num_transformer_layers: 2
+    num_heads: 6
+    dropout: 0.05
+    mlp_hidden_dim: 128
+    
+  large:
+    swin_model: "microsoft/swin-large-patch4-window7-224"  # Swin-Large (197M params)
+    feature_dim: 1536
+    num_transformer_layers: 4
+    num_heads: 12
+    dropout: 0.15
+    mlp_hidden_dim: 512
+    mlp_ratio: 6.0

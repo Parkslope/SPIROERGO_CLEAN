@@ -1,0 +1,57 @@
+# Configuration for Junteng/Chart_CLIP model
+# Uses chart-specific pretrained CLIP
+
+defaults:
+  - model: chartclip_multiplot
+  - data: multiplot_data
+  - training: default
+  - augmentation: clinical_aware
+  - _self_
+
+# Override model to use Junteng/Chart_CLIP
+model:
+  chartclip_model: "Junteng/Chart_CLIP"  # Chart-specific CLIP
+  freeze_encoder: true
+  projection_dim: 768
+  num_heads: 8
+  num_transformer_layers: 3
+  dropout: 0.1
+  mlp_hidden_dim: 256
+  mlp_ratio: 2.0
+
+# Experiment name
+experiment_name: "Chart_CLIP_Junteng"
+
+# WandB configuration
+wandb:
+  project: "SpiroErgoPHFinal"
+  entity: null
+  name: "Chart_CLIP_Junteng"
+  tags: ["chartclip", "junteng", "multiplot", "5fold_cv"]
+  notes: "Chart-specific CLIP (Junteng/Chart_CLIP) for PH classification"
+  mode: "online"  # online, offline, or disabled
+
+# Output directories
+output_dir: "outputs/Chart_CLIP_Junteng"
+checkpoint_dir: "checkpoints/Chart_CLIP_Junteng"
+log_dir: "logs/Chart_CLIP_Junteng"
+results_dir: "results/Chart_CLIP_Junteng"
+
+# Training configuration
+training:
+  epochs: 50
+  learning_rate: 1.0e-4
+  weight_decay: 0.01
+  optimizer:
+    name: "adamw"
+  scheduler:
+    name: "cosine"
+  early_stopping:
+    patience: 15
+    min_delta: 0.001
+    restore_best_weights: true
+
+# Device & reproducibility
+device: "auto"  # auto, cuda, or cpu
+seed: 42
+mixed_precision: true

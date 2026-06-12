@@ -1,0 +1,31 @@
+# ResNet-50 Baseline Configuration
+defaults:
+  - model: resnet50_multiplot
+  - data: multiplot_data
+  - training: default
+  - augmentation: clinical_aware
+  - _self_
+
+# Global settings
+project_name: "SpiroErgoPHFinal"
+experiment_name: "ResNet50-Baseline"
+seed: 42
+
+# Weights & Biases settings
+wandb:
+  project: ${project_name}
+  entity: null
+  name: ${experiment_name}
+  tags: ["cpet", "pulmonary-hypertension", "resnet50", "baseline", "medical-imaging"]
+  notes: "CPET plot classification using ImageNet pretrained ResNet-50 baseline"
+  mode: "online"  # online, offline, or disabled
+  
+# Output directories
+output_dir: "outputs"
+checkpoint_dir: "checkpoints"
+log_dir: "logs"
+results_dir: "results"
+
+# Device settings
+device: "auto"
+mixed_precision: true

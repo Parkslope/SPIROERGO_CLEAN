@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Private data files (full dataset CSVs)
+*.csv
+!sample_data/sample_labels.csv
+!data/csv_template.csv
+
+# Trained model checkpoints (upload to Zenodo instead)
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+
+# Training outputs
+logs/
+outputs/
+results/
+evaluation_results/
+wandb/
+wandb_*/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Evaluation outputs (generated, not source)
+evaluation/results/
+
+# Node (not needed in public repo)
+node_modules/
+package-lock.json
+package.json
+
+# Misc
+*.docx
+*.ris
+*.js
+*.skill
+ziaQpTxH

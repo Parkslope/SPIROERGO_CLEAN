@@ -1,0 +1,34 @@
+# ChartCLIP Multi-Plot Model Configuration
+name: "chartclip_multiplot"
+
+# ChartCLIP encoder settings
+chartclip_model: "openai/clip-vit-large-patch14-336"  # Using base CLIP model (ChartCLIP models may not be publicly available)
+freeze_encoder: true
+projection_dim: null  # null to use default CLIP dim (768), or specify custom dimension
+
+# Multi-plot architecture
+num_panels: 9  # 3x3 grid of plots
+
+# Transformer aggregator settings
+num_heads: 8
+num_transformer_layers: 3
+dropout: 0.1
+mlp_ratio: 4.0  # FFN expansion ratio in transformer
+
+# Classification head
+mlp_hidden_dim: 256
+
+# Model variants
+variants:
+  small:
+    num_transformer_layers: 2
+    num_heads: 6
+    dropout: 0.05
+    mlp_hidden_dim: 128
+    
+  large:
+    num_transformer_layers: 4
+    num_heads: 12
+    dropout: 0.15
+    mlp_hidden_dim: 512
+    mlp_ratio: 6.0

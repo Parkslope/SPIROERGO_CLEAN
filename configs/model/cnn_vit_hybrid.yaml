@@ -1,0 +1,31 @@
+# CNN-ViT Hybrid Model Configuration
+name: "cnn_vit_hybrid"
+num_classes: 2
+pretrained: true
+
+# Architecture parameters
+backbone_name: "resnet50"  # CNN backbone: resnet50, resnet101, efficientnet_b0, etc.
+embed_dim: 768            # ViT embedding dimension
+num_heads: 12             # Number of attention heads
+num_layers: 6             # Number of transformer layers
+dropout: 0.2              # Dropout rate
+patch_size: 4             # Patch size for feature embedding
+
+# Transfer learning settings
+freeze_early_layers: true
+num_frozen_layers: 2
+
+# Model variants (alternative configurations)
+variants:
+  small:
+    embed_dim: 384
+    num_heads: 6
+    num_layers: 4
+    dropout: 0.1
+    
+  large:
+    embed_dim: 1024
+    num_heads: 16
+    num_layers: 8
+    dropout: 0.3
+    backbone_name: "resnet101"

@@ -1,0 +1,36 @@
+# ResNet-50 Multi-Plot Baseline Configuration
+name: "resnet50_multiplot"
+
+# ResNet-50 encoder settings
+resnet_model: "resnet50"  # ImageNet pretrained ResNet-50
+pretrained: true  # Use ImageNet pretrained weights
+freeze_encoder: false  # Allow fine-tuning of ResNet
+feature_dim: 2048  # ResNet-50 output dimension
+projection_dim: null  # null to use ResNet feature dim (2048), or specify custom dimension
+
+# Multi-plot architecture
+num_panels: 9  # 3x3 grid of plots
+
+# Transformer aggregator settings
+num_heads: 8
+num_transformer_layers: 3
+dropout: 0.1
+mlp_ratio: 4.0  # FFN expansion ratio in transformer
+
+# Classification head
+mlp_hidden_dim: 256
+
+# Model variants
+variants:
+  small:
+    num_transformer_layers: 2
+    num_heads: 6
+    dropout: 0.05
+    mlp_hidden_dim: 128
+    
+  large:
+    num_transformer_layers: 4
+    num_heads: 12
+    dropout: 0.15
+    mlp_hidden_dim: 512
+    mlp_ratio: 6.0

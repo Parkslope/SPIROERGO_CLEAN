@@ -1,0 +1,48 @@
+# ConvNeXt Multi-Plot Configuration
+name: "convnext_multiplot"
+
+# ConvNeXt encoder settings - UNFROZEN FOR FINE-TUNING
+convnext_model: "facebook/convnext-tiny-224"  # Use Tiny (28M) to reduce overfitting
+pretrained: true  # Use pretrained weights
+freeze_encoder: false  # UNFREEZE - allow fine-tuning to medical plots
+feature_dim: 768  # ConvNeXt-Tiny output dimension
+projection_dim: null  # null to use ConvNeXt feature dim
+
+# Multi-plot architecture
+num_panels: 9  # 3x3 grid of plots
+
+# Transformer aggregator settings - BALANCED REGULARIZATION
+num_heads: 8
+num_transformer_layers: 3
+dropout: 0.15  # Balanced dropout (not too high)
+mlp_ratio: 4.0  # FFN expansion ratio in transformer
+
+# Classification head
+mlp_hidden_dim: 256
+
+# Model variants
+variants:
+  tiny:
+    convnext_model: "facebook/convnext-tiny-224"  # ConvNeXt-Tiny (28M params)
+    feature_dim: 768
+    num_transformer_layers: 2
+    num_heads: 6
+    dropout: 0.05
+    mlp_hidden_dim: 128
+    
+  small:
+    convnext_model: "facebook/convnext-small-224"  # ConvNeXt-Small (50M params)
+    feature_dim: 768
+    num_transformer_layers: 2
+    num_heads: 6
+    dropout: 0.05
+    mlp_hidden_dim: 128
+    
+  large:
+    convnext_model: "facebook/convnext-large-224-22k"  # ConvNeXt-Large (198M params) - 22k exists
+    feature_dim: 1536
+    num_transformer_layers: 4
+    num_heads: 12
+    dropout: 0.15
+    mlp_hidden_dim: 512
+    mlp_ratio: 6.0

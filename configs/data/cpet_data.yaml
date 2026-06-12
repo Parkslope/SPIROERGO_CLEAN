@@ -1,0 +1,32 @@
+# CPET Data Configuration
+# For conference submission - uses provided sample data
+csv_file: "sample_data/sample_labels.csv"
+plot_dir: "sample_data"
+
+# Image processing
+image_size: [512, 512]  # [height, width]
+cache_images: true
+dpi: 300  # DPI for PDF conversion
+
+# Data loading
+batch_size: 16
+num_workers: 4
+pin_memory: true
+drop_last: true  # For training only
+
+# Data splits (these are already defined in the CSV)
+splits:
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+
+# Class information
+classes:
+  - "Normal"
+  - "Pulmonary Hypertension"
+  
+class_weights: "auto"  # auto, balanced, or specific weights [w0, w1]
+
+# Data validation
+check_missing_files: true
+validate_splits: true

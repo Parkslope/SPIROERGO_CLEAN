@@ -1,0 +1,31 @@
+# Swin Transformer Baseline Configuration
+defaults:
+  - model: swin_multiplot
+  - data: multiplot_data_swin  # Use Swin-specific config with 224x224 images
+  - training: swin_optimized  # Use optimized training config
+  - augmentation: clinical_aware
+  - _self_
+
+# Global settings
+project_name: "SpiroErgoPHFinal"
+experiment_name: "Swin-Base-Baseline"
+seed: 42
+
+# Weights & Biases settings
+wandb:
+  project: ${project_name}
+  entity: null
+  name: ${experiment_name}
+  tags: ["cpet", "pulmonary-hypertension", "swin", "transformer", "baseline", "medical-imaging"]
+  notes: "CPET plot classification using ImageNet-22k pretrained Swin-Base Transformer"
+  mode: "online"  # online, offline, or disabled
+  
+# Output directories
+output_dir: "outputs"
+checkpoint_dir: "checkpoints"
+log_dir: "logs"
+results_dir: "results"
+
+# Device settings
+device: "auto"
+mixed_precision: true

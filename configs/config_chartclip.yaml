@@ -1,0 +1,31 @@
+# Main ChartCLIP Multi-Plot Configuration
+defaults:
+  - model: chartclip_multiplot
+  - data: multiplot_data
+  - training: default
+  - _self_
+
+# Global settings
+project_name: "SpiroErgoPHFinal"
+experiment_name: "ChartCLIP-MultiPlot"
+seed: 42
+
+# Weights & Biases settings
+wandb:
+  project: ${project_name}
+  entity: null  # Set your wandb entity here
+  name: ${experiment_name}
+  tags: ["cpet", "pulmonary-hypertension", "chartclip", "multiplot", "transformer"]
+  notes: "Multi-plot CPET classification using ChartCLIP encoder and transformer aggregation"
+  mode: "online"  # online, offline, or disabled
+  
+# Output directories
+output_dir: "outputs"
+checkpoint_dir: "checkpoints"
+log_dir: "logs"
+results_dir: "results"
+
+# Device settings
+device: "auto"  # auto, cuda, cpu
+mixed_precision: true
+compile_model: false  # PyTorch 2.0 compile (experimental)
