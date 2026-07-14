@@ -2,8 +2,8 @@
 
 Code for the paper:  
 **"Deep Learning on Wassermann Plots for Pulmonary Hypertension Detection and Subtype Discrimination"**  
-Tri-Thien Nguyen, Andreas Maier, Michael Uder, Sebastian Bickelhaupt, Julian Mueller, Simon R. Schneider, Michael Furian, Helga Preiss, Carmen Wick, Silvia Ulrich, Mona Lichtblau  
-*[Journal Name], [Year]*
+Tri-Thien Nguyen, Andreas Maier, Michael Uder, Sebastian Bickelhaupt, Julian Müller, Simon R. Schneider, Michael Furian, Helga Preiss, Carmen Wick, Silvia Ulrich, Mona Lichtblau  
+*In submission*
 
 Trained model weights: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20667420.svg)](https://doi.org/10.5281/zenodo.20667420)
 
@@ -245,10 +245,8 @@ If you use this code, please cite:
 ```bibtex
 @article{nguyen2025spiroergo,
   title   = {Deep Learning on Wassermann Plots for Pulmonary Hypertension Detection and Subtype Discrimination},
-  author  = {Nguyen, Tri-Thien and Maier, Andreas and Uder, Michael and Bickelhaupt, Sebastian and Mueller, Julian and Schneider, Simon R. and Furian, Michael and Preiss, Helga and Wick, Carmen and Ulrich, Silvia and Lichtblau, Mona},
-  journal = {[Journal Name]},
-  year    = {[Year]},
-  doi     = {[DOI]}
+  author  = {Nguyen, Tri-Thien and Maier, Andreas and Uder, Michael and Bickelhaupt, Sebastian and Müller, Julian and Schneider, Simon R. and Furian, Michael and Preiss, Helga and Wick, Carmen and Ulrich, Silvia and Lichtblau, Mona},
+  note    = {Manuscript submitted for publication}
 }
 ```
 
