@@ -15,9 +15,9 @@ This repository implements a deep learning system for automated detection of Pul
 
 ### Key features
 
-- Multi-encoder support: ResNet-50, ConvNeXt-Base, CLIP ViT-L/14
+- Multi-encoder support: ResNet-50, ConvNeXt-Tiny, CLIP ViT-L/14
 - Transformer aggregation with learnable positional embeddings for 9 panels
-- 5-fold cross-validation with nested validation splits
+- Patient-level 5-fold cross-validation with nested validation splits
 - Panel-shuffling ablation to assess positional dependence
 - Attention weight visualization (panel-level heatmaps)
 - GradCAM subgroup analysis (PAH vs. CTEPH)
@@ -28,7 +28,7 @@ This repository implements a deep learning system for automated detection of Pul
 ```
 Input: 9 CPET panels (3×3 grid)
     ↓
-Shared encoder (ResNet-50 / ConvNeXt-Base / CLIP ViT-L)
+Shared encoder (ResNet-50 / ConvNeXt-Tiny / CLIP ViT-L)
     ↓
 Learnable position embeddings (9 positions)
     ↓
@@ -69,16 +69,23 @@ This renders each PDF, detects the 3×3 plot grid via bounding-box analysis, and
 
 ### Prepare cross-validation splits
 
+The study used 5-fold cross-validation with splits made at the **patient level**: all examinations of a patient sit in the same fold, so no patient appears in both training and test data. The training scripts do not create folds. They read precomputed `fold_test` / `fold_val` columns from the input CSV, and those columns must already be patient-level. The study's fold file contains patient identifiers and is not published. The fold columns in `sample_data/` and `data/csv_template.csv` are anonymized placeholders only.
+
+To generate patient-level folds for your own data, pass a patient identifier column:
+
 ```bash
 python preprocessing/create_nested_folds.py \
     --csv your_labels.csv \
-    --n_folds 5
+    --n_folds 5 \
+    --group_col patient_id
 ```
+
+Without `--group_col`, the script splits rows (examinations) independently, which is not patient-level.
 
 ### Train (5-fold cross-validation)
 
 ```bash
-# ConvNeXt-Base (best model)
+# ConvNeXt-Tiny (best model)
 python train_cv.py \
     --config configs/config_convnext.yaml \
     --model_name ConvNeXt_Baseline \
@@ -139,7 +146,7 @@ python evaluation/analyze_attention_gradcam_subgroup.py \
 ├── requirements.txt
 │
 ├── configs/                            # Hydra configuration files
-│   ├── config_convnext.yaml            # ConvNeXt-Base (best)
+│   ├── config_convnext.yaml            # ConvNeXt-Tiny (best)
 │   ├── config_resnet50.yaml            # ResNet-50 baseline
 │   ├── config.yaml                     # CLIP ViT-L baseline
 │   ├── model/
@@ -174,27 +181,20 @@ python evaluation/analyze_attention_gradcam_subgroup.py \
 
 ## Dataset
 
-- **Total samples**: 2,125 anonymized CPET multi-panel plots
+- **Total samples**: 2,124 anonymized CPET examinations (multi-panel plots) from 1,243 patients
 - **Classes**: Binary — 0 = Normal/Non-PH, 1 = Pulmonary Hypertension
-- **Splits**: 5-fold cross-validation with nested validation folds
+- **Splits**: patient-level 5-fold cross-validation with nested validation folds (see [Prepare cross-validation splits](#prepare-cross-validation-splits))
 - **Sample data**: 20 representative de-identified cases in `sample_data/`
 
 The CSV label file requires columns: `sample_id`, `label`, `fold_test`, `fold_val`.
 
 ## Results
 
-| Model | AUC (mean ± std) |
-|-------|-----------------|
-| ConvNeXt-Base | **0.846 ± 0.020** |
-| ConvNeXt-Base (shuffled panels) | 0.848 ± 0.027 |
-| ResNet-50 | 0.831 ± 0.022 |
-| CLIP ViT-L/14 | 0.797 ± 0.022 |
-
-The panel-shuffling ablation shows no significant performance drop, indicating the transformer learns position-invariant inter-panel features rather than relying on fixed spatial ordering.
+Results are reported in the manuscript.
 
 ## Pretrained models
 
-Trained model weights (5-fold checkpoints for ConvNeXt-Baseline and ConvNeXt-ShuffledPanels) are available on Zenodo:
+Trained model weights (5-fold checkpoints for ConvNeXt-Tiny baseline and panel-shuffled ConvNeXt-Tiny) are available on Zenodo:
 
 **DOI: [https://doi.org/10.5281/zenodo.20667420](https://doi.org/10.5281/zenodo.20667420)**
 
@@ -219,7 +219,7 @@ Key hyperparameters (see `configs/` for full settings):
 
 | Parameter | Value |
 |-----------|-------|
-| Image size | 224×224 (ConvNeXt/ResNet), 336×336 (CLIP) |
+| Image size | 224×224 (ConvNeXt-Tiny), 336×336 (ResNet-50, CLIP) |
 | Batch size | 8–16 |
 | Transformer layers | 3 |
 | Attention heads | 8 |

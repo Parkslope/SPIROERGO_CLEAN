@@ -7,13 +7,19 @@ For each fold k (0-4):
 - Training set: all other samples
 
 This ensures non-overlapping train/val/test within each fold.
+
+Pass --group_col (a patient identifier column) for patient-level splitting:
+all examinations of the same patient are kept in the same group
+(StratifiedGroupKFold). Without it, rows are split independently.
 """
+
+import argparse
 
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedKFold, StratifiedGroupKFold
 
-def create_nested_folds(csv_path='spiro_binary_labels.csv', n_folds=5, random_state=42):
+def create_nested_folds(csv_path='spiro_binary_labels.csv', n_folds=5, random_state=42, group_col=None):
     """
     Create nested folds with separate validation and test sets
     
@@ -28,6 +34,7 @@ def create_nested_folds(csv_path='spiro_binary_labels.csv', n_folds=5, random_st
         csv_path: Path to CSV
         n_folds: Number of folds
         random_state: Random seed
+        group_col: Optional patient ID column; rows sharing a value stay in the same group
     """
     # Load data
     df = pd.read_csv(csv_path, sep=';')
@@ -43,11 +50,16 @@ def create_nested_folds(csv_path='spiro_binary_labels.csv', n_folds=5, random_st
     # Then rotate: fold k uses group k as test, group (k+1)%K as val, rest as train
     
     # First, divide all data into K stratified groups
-    skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=random_state)
-    
+    if group_col is None:
+        skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=random_state)
+        splits = skf.split(df.index, df['binary_class'])
+    else:
+        skf = StratifiedGroupKFold(n_splits=n_folds, shuffle=True, random_state=random_state)
+        splits = skf.split(df.index, df['binary_class'], groups=df[group_col])
+
     # Assign each sample to a base group (0 to K-1)
     df['base_group'] = -1
-    for group, (_, group_idx) in enumerate(skf.split(df.index, df['binary_class'])):
+    for group, (_, group_idx) in enumerate(splits):
         df.loc[group_idx, 'base_group'] = group
     
     # Now for each fold, assign test and val based on rotation
@@ -110,7 +122,14 @@ def create_nested_folds(csv_path='spiro_binary_labels.csv', n_folds=5, random_st
     return df
 
 if __name__ == "__main__":
-    df = create_nested_folds()
-    
+    parser = argparse.ArgumentParser(description="Create nested K-fold CV assignments (fold_test, fold_val)")
+    parser.add_argument("--csv", default="spiro_binary_labels.csv", help="Semicolon-separated label CSV (updated in place)")
+    parser.add_argument("--n_folds", type=int, default=5)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--group_col", default=None, help="Patient identifier column for patient-level splitting")
+    args = parser.parse_args()
+
+    df = create_nested_folds(args.csv, n_folds=args.n_folds, random_state=args.seed, group_col=args.group_col)
+
     print("\nSample rows:")
-    print(df[['id', 'filename', 'binary_class', 'split', 'fold_test', 'fold_val']].head(20))
+    print(df[[c for c in ['id', 'filename', 'binary_class', 'split', 'fold_test', 'fold_val'] if c in df.columns]].head(20))

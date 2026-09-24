@@ -1,14 +1,14 @@
 # ConvNeXt Baseline Configuration
 defaults:
   - model: convnext_multiplot
-  - data: multiplot_data_convnext  # Use ConvNeXt-specific config with 336x336 images
+  - data: multiplot_data_convnext  # Use ConvNeXt-specific config with 224x224 images
   - training: convnext_optimized  # Use optimized training config
   - augmentation: clinical_aware
   - _self_
 
 # Global settings
 project_name: "SpiroErgoPHFinal"
-experiment_name: "ConvNeXt-Base-Baseline"
+experiment_name: "ConvNeXt-Tiny-Baseline"
 seed: 42
 
 # Weights & Biases settings
@@ -17,7 +17,7 @@ wandb:
   entity: null
   name: ${experiment_name}
   tags: ["cpet", "pulmonary-hypertension", "convnext", "cnn", "baseline", "medical-imaging"]
-  notes: "CPET plot classification using ImageNet-22k pretrained ConvNeXt-Base"
+  notes: "CPET plot classification using ImageNet pretrained ConvNeXt-Tiny"
   mode: "online"  # online, offline, or disabled
   
 # Output directories

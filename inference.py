@@ -47,7 +47,7 @@ def load_sample(sample_dir: Path, transform: T.Compose) -> torch.Tensor:
 def load_model(checkpoint_path: str, model_type: str, device: torch.device) -> torch.nn.Module:
     if model_type == "convnext":
         model = MultiPlotConvNeXt(
-            convnext_model="facebook/convnext-base-224-22k",
+            convnext_model="facebook/convnext-tiny-224",
             pretrained=False,
             freeze_encoder=False,
             projection_dim=None,
@@ -87,7 +87,8 @@ def main():
     parser.add_argument("--data_dir",   required=True, help="Directory containing sample sub-folders")
     parser.add_argument("--checkpoint", required=True, help="Path to model checkpoint (.pth)")
     parser.add_argument("--model_type", default="convnext", choices=["convnext", "resnet"])
-    parser.add_argument("--image_size", type=int, default=224)
+    parser.add_argument("--image_size", type=int, default=None,
+                        help="Input resolution (default: 224 for convnext, 336 for resnet)")
     parser.add_argument("--threshold",  type=float, default=0.5, help="Decision threshold")
     parser.add_argument("--output_csv", default=None, help="Optional path to save predictions CSV")
     args = parser.parse_args()
@@ -96,7 +97,8 @@ def main():
     print(f"Device: {device}")
 
     model = load_model(args.checkpoint, args.model_type, device)
-    transform = get_transform(args.image_size)
+    image_size = args.image_size or (224 if args.model_type == "convnext" else 336)
+    transform = get_transform(image_size)
 
     data_dir = Path(args.data_dir)
     sample_dirs = sorted(p for p in data_dir.iterdir() if p.is_dir())
