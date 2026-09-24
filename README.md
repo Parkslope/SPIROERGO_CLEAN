@@ -186,7 +186,7 @@ python evaluation/analyze_attention_gradcam_subgroup.py \
 - **Splits**: patient-level 5-fold cross-validation with nested validation folds (see [Prepare cross-validation splits](#prepare-cross-validation-splits))
 - **Sample data**: 20 representative de-identified cases in `sample_data/`
 
-The CSV label file requires columns: `sample_id`, `label`, `fold_test`, `fold_val`.
+The CSV label file is semicolon-separated and requires columns: `id`, `filename`, `binary_class`, `split`, `fold_test`, `fold_val` (see [data/README.md](data/README.md)).
 
 ## Results
 

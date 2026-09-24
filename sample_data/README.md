@@ -10,11 +10,15 @@ Each sample directory contains:
 
 ## Labels
 
-The `sample_labels.csv` file contains:
-- `sample_id`: Anonymized sample identifier
-- `label`: 0 = Normal, 1 = Pulmonary Hypertension
+The `sample_labels.csv` file is semicolon-separated (same format as `data/csv_template.csv`) and contains:
+- `id`: Row index
+- `filename`: Sample folder name (e.g. `sample_001`)
+- `binary_class`: 0 = Normal, 1 = Pulmonary Hypertension
+- `split`: `train`, `val`, or `test` (fold 0 assignment, for single-run training)
 - `fold_test`: Test fold assignment (0-4)
 - `fold_val`: Validation fold assignment (0-4)
+
+The fold assignments are placeholders for testing the pipeline, not the study folds.
 
 ## Usage
 
@@ -23,7 +27,7 @@ import pandas as pd
 from PIL import Image
 
 # Load labels
-labels = pd.read_csv('sample_data/sample_labels.csv')
+labels = pd.read_csv('sample_data/sample_labels.csv', sep=';')
 
 # Load a sample's plots
 sample_id = 'sample_001'

@@ -454,7 +454,7 @@ def create_multiplot_data_loaders(
 
 def analyze_dataset(csv_file: str, plot_dir: str):
     """Analyze dataset and print statistics"""
-    df = pd.read_csv(csv_file)
+    df = pd.read_csv(csv_file, sep=';')
     plot_dir = Path(plot_dir)
     
     print("="*60)
